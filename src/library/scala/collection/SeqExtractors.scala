@@ -6,6 +6,7 @@ object +: {
   def unapply[T,Coll <: SeqLike[T, Coll]](
       t: Coll with SeqLike[T, Coll]): Option[(T, Coll)] =
     if(t.isEmpty) None
+    else if (t.isInstanceOf[immutable.Queue[_]]) Some(t.asInstanceOf[Queue[T]].dequeue.asInstanceOf[(T, Coll)])
     else Some(t.head -> t.tail)
 }
 
