@@ -199,8 +199,15 @@ object Predef extends LowPriorityImplicits {
   // Minor variations on identity functions
   /** @group utilities */
   @inline def identity[A](x: A): A         = x    // @see `conforms` for the implicit version
-  /** @group utilities */
-  @inline def implicitly[T](implicit e: T) = e    // for summoning implicit values from the nether world -- TODO: when dependent method types are on by default, give this result type `e.type`, so that inliner has better chance of knowing which method to inline in calls like `implicitly[MatchingStrategy[Option]].zero`
+  /** for summoning implicit values from the nether world
+    *
+    * @return the result type is `e.type`,
+    *         so that inliner has better chance of knowing
+    *         which method to inline in calls like `implicitly[MatchingStrategy[Option]].zero`
+    *
+    * @group utilities
+    */
+  @inline def implicitly[T](implicit e: T): e.type = e
   /** @group utilities */
   @inline def locally[T](x: T): T  = x    // to communicate intent and avoid unmoored statements
 
